@@ -1,0 +1,19 @@
+#!/bin/bash
+name=$(basename $0)
+url=$1
+ref=$2
+
+if [ $ref == "refs/heads/develop" ]; then
+    # exec test
+    dir=`mktemp -d /tmp/buildroot-${name}.XXXXXXX`
+    cd $dir
+    git clone $url
+    cd $name
+    perl Makefile.PL
+    cover -test
+    rm -rf $dir
+fi
+
+if [ $ref == "refs/heads/master" ]; then
+    # exec deploy script
+fi
